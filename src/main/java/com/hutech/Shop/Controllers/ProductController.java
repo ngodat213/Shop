@@ -26,9 +26,11 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
+
     @GetMapping
     public String showProductList(Model model) {
-        model.addAttribute("products", productService.getAllProducts());  return "/products/product-list";
+        model.addAttribute("products", productService.getAllProducts());
+        return "/products/product-list";
     }
     // For adding a new product
     @GetMapping("/add")
