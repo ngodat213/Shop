@@ -49,8 +49,8 @@ public class User {
     @Column(name = "HIDE", nullable = false)
     private boolean hide;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Cart> carts;
+//    @OneToMany(mappedBy = "user")
+//    private Set<Cart> carts;
 
     @OneToMany(mappedBy = "user")
     private Set<Blog> blogs;

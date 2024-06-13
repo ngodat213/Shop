@@ -15,7 +15,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_PRO")
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "ID_CAT", referencedColumnName = "ID_CAT")
@@ -36,12 +36,6 @@ public class Product {
     @Column(name = "IMG1")
     private String img1;
 
-    @Column(name = "IMG2")
-    private String img2;
-
-    @Column(name = "IMG3")
-    private String img3;
-
     @Column(name = "META")
     private String meta;
 
@@ -53,8 +47,4 @@ public class Product {
 
     @Column(name = "HIDE", nullable = false)
     private boolean hide;
-
-    @OneToMany(mappedBy = "product")
-    private Set<CartDetail> cartDetails;
-
 }

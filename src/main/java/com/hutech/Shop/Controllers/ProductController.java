@@ -36,14 +36,15 @@ public class ProductController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("product", new Product());
-        model.addAttribute("categories", categoryService.getAlCatologies());  return "/products/add-product";
+        model.addAttribute("categories", categoryService.getAlCatologies());
+        return "/products/add-product";
     }
     // Process the form for adding a new product
     @PostMapping("/add")
     public String addProduct(@Valid Product product, BindingResult result, Model model, @RequestParam("imageFile") MultipartFile imageFile) {
         if (result.hasErrors()) {
-        return "/products/add-product";
-    }
+            return "/products/add-product";
+        }
         // Save the image file
         if (!imageFile.isEmpty()) {
             try {
@@ -65,10 +66,11 @@ public class ProductController {
         model.addAttribute("product", product);
         model.addAttribute("categories", categoryService.getAlCatologies());  return "/products/update-product";
     }
+
     @PostMapping("/update/{id}")
     public String updateProduct(@PathVariable Long id, @Valid Product product, BindingResult result, @RequestParam("imageFile") MultipartFile imageFile) {
         if (result.hasErrors()) {
-            product.setId(Math.toIntExact(id));
+            product.setId(id);
             return "/products/update-product";
         }
         String imagePath = null;
