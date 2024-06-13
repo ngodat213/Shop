@@ -24,7 +24,7 @@ public class OrderController {
         return "/cart/checkout";
     }
     @PostMapping("/submit")
-    public String submitOrder(String customerName) {
+    public String submitOrder(String customerName, String customerAddress, String customerPhone, String customerNotes) {
         List<CartItem> cartItems = cartService.getCartItems();
         if (cartItems.isEmpty()) {
             return "redirect:/cart"; // Redirect if cart is empty

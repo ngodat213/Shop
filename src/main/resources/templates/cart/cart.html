@@ -35,7 +35,7 @@
     </div>
     <div class="mt-3">
         <a th:href="@{/cart/clear}" class="btn btn-secondary">Clear Cart</a>  |
-        <a th:href="@{/order/checkout}" class="btn btn-primary mb-3">Check Out</a>
+        <a th:href="@{/order/checkout}" th:classappend="${cartItems.isEmpty()} ? 'disabled' : ''" class="btn btn-primary mb-3">Check Out</a>
     </div>
 </section>
 </body>
