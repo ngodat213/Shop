@@ -52,6 +52,10 @@ public class UserController {
             model.addAttribute("errors", "Phone number is already in use");
             return "users/register";
         }
+        if(userService.exitsUser(user.getUsername())){
+            model.addAttribute("errors", "username is already in use");
+            return "users/register";
+        }
         if (bindingResult.hasErrors()) { // Kiểm tra nếu có lỗi validate
             var errors = bindingResult.getAllErrors()
                     .stream()

@@ -71,4 +71,7 @@ public class UserService implements UserDetailsService {
     public boolean exitsPhoneNumber(String phoneNumber) {
         return userRepository.existsByPhone(phoneNumber);
     }
+    public boolean exitsUser(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }
