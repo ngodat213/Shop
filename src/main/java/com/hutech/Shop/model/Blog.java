@@ -12,10 +12,6 @@ public class Blog {
     @Column(name = "ID_BLOG")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_USERS", referencedColumnName = "ID_USERS")
-    private User user;
-
     @Column(name = "TITLE", nullable = false)
     private String title;
 

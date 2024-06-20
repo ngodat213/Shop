@@ -41,21 +41,9 @@ public class ProductController {
     }
     // Process the form for adding a new product
     @PostMapping("/add")
-    public String addProduct(@Valid Product product, BindingResult result, Model model, @RequestParam("imageFile") MultipartFile imageFile) {
+    public String addProduct(@Valid Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "/products/add-product";
-        }
-        // Save the image file
-        if (!imageFile.isEmpty()) {
-            try {
-                byte[] bytes = imageFile.getBytes();
-                String fileName = imageFile.getOriginalFilename();
-                Path path = Paths.get("src/main/resources/static/images/" + fileName); // Change this to your desired directory
-                Files.write(path, bytes);
-                product.setImg1(fileName); // Set the file path in the SinhVien object
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         productService.addProduct(product);
         return "redirect:/products";
