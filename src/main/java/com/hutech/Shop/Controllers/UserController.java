@@ -6,6 +6,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,11 +22,19 @@ public class UserController {
 
     @GetMapping("/login")
     public String login() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
+            return "products/product-list"; // Redirect to home if already logged in
+        }
         return "users/login";
     }
 
     @GetMapping("/register")
     public String register(@NotNull Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
+            return "products/product-list"; // Redirect to home if already logged in
+        }
         model.addAttribute("user", new User()); // Thêm một đối tượng User mới vào model
         return "users/register";
     }
