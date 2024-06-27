@@ -1,9 +1,14 @@
 package com.hutech.Shop.Controllers;
 
 import com.hutech.Shop.Services.CategoryService;
+import com.hutech.Shop.Services.MenuService;
 import com.hutech.Shop.Services.ProductService;
+import com.hutech.Shop.model.Category;
+import com.hutech.Shop.model.Menu;
 import com.hutech.Shop.model.Product;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,70 +23,64 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
+@RequiredArgsConstructor
+@Slf4j
 public class ProductController {
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+    private final MenuService menuService;
+    private final ProductService productService;
 
     @GetMapping
     public String showProductList(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
+        List<Menu> menus = menuService.findAllMenu();
+        Map<Category, List<Product>> categoryProducts =
+                productService.getTop6ProductsByCategory();
+        model.addAttribute("categoryProducts", categoryProducts);
+        model.addAttribute("menus", menus);
         return "/products/product-list";
     }
-    // For adding a new product
+    @GetMapping("/detail/{link}")
+    public String productDetail(@PathVariable String link, Model model) {
+        Optional<Product> productOpt = productService.getProductByLink(link);
+        if (productOpt.isPresent()) {
+            model.addAttribute("product", productOpt.get());
+            addCommonAttributes(model);
+            return "/products/product-detail";
+        } else {
+            return "error"; // Handle the case when the product is not found
+        }
+    }
+    @GetMapping("/{category}")
+    public String ProductCategory(Model model,
+                                  @PathVariable String category,
+                                  @RequestParam(name = "page", defaultValue = "0") int page) {
+        Category cat = categoryService.findByLink(category);
+        if (cat == null) {
+            return "error"; // Xử lý khi không tìm thấy danh mục
+        }
+        Long categoryId = cat.getId();
+        List<Product> productsForCategory =
+                productService.getProductsByCategoryId(categoryId);
+        model.addAttribute("categoryName", cat.getName());
+        model.addAttribute("productsForCategory", productsForCategory);
+        addCommonAttributes(model);
+        return "products/product";
+    }
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("product", new Product());
-        model.addAttribute("categories", categoryService.getAlCatologies());
+        model.addAttribute("categories", categoryService.findAll());
         return "/products/add-product";
     }
-    // Process the form for adding a new product
-    @PostMapping("/add")
-    public String addProduct(@Valid Product product, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "/products/add-product";
-        }
-        productService.addProduct(product);
-        return "redirect:/products";
-    }
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {  Product product = productService.getProductById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
-        model.addAttribute("product", product);
-        model.addAttribute("categories", categoryService.getAlCatologies());  return "/products/update-product";
-    }
 
-    @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable Long id, @Valid Product product, BindingResult result, @RequestParam("imageFile") MultipartFile imageFile) {
-        if (result.hasErrors()) {
-            product.setId(id);
-            return "/products/update-product";
-        }
-        String imagePath = null;
-        if (!imageFile.isEmpty()) {
-            try {
-                byte[] bytes = imageFile.getBytes();
-                String fileName = imageFile.getOriginalFilename();
-                Path path = Paths.get("src/main/resources/static/images/" + fileName); // Change this to your desired directory
-                Files.write(path, bytes);
-                imagePath = fileName; // Set the file path in the SinhVien object
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(imagePath);
-
-        productService.updateProduct(product, imagePath);
-        return "redirect:/products";
-    }
-    // Handle request to delete a product
-    @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id) {
-        productService.deleteProductById(id);
-        return "redirect:/products";
+    private void addCommonAttributes(Model model) {
+        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("menus", menuService.findAllMenu());
     }
 }

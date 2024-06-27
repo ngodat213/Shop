@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="panel panel-primary panel-post" th:fragment="blog(blogs)">
+    <div class="panel-heading panel-heading-prod"><i class="fa fa-comments-o"></i>
+        Bài viết chăm
+        sóc thú cưng
+    </div>
+    <div class="panel-body panel-body-post">
+        <div th:each="blog : ${blogs}">
+            <h4>
+                <a th:href="@{'/bai-viet/'+${blog.link}}"
+                   th:text="${blog.title}"></a></h4>
+            <p th:text="${blog.detail}"></p>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <p class="more-prod"><a th:href="@{/xem-them-bai-viet}" target="_blank">Xem
+            thêm bài
+            viết...</a></p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="container">
+    <div th:if="${slides != null && !slides.isEmpty()}">
+        <div class="col-md-9">
+            <div th:replace="Fragments/slide :: slide(${slides})"></div>
+            <!-- Sản phẩm -->
+            <div th:replace="Fragments/product :: product(${product})"></div>
+        </div>
+        <div class="col-md-3">
+            <div th:replace="Fragments/blog :: blog(${blogs})"></div>
+            <div class="panel panel-success panel-post">
+                <div class="panel-heading panel-heading-prod"><i class="fa fa-paperplane"></i> Quảng cáo</div>
+                <div class="panel-body panel-body-post">
+                    <img
+                            th:src="@{~/wwwroot/images/products/3152_chic_cham_dau_tam_cam_petcity.png}"
+                            class="img-rounded img-adv" alt="Quảng cáo"/>
+                    <marquee>Hãy luôn chăm sóc tốt nhất cho cục cưng của bạn bằng cách tắm
+                        chúng với sữa tắm dành riêng
+                        cho chó - mèo đạt chuẩn an toàn!
+                    </marquee>
+                </div>
+            </div>
+            <div class="youtube">
+                <iframe width="110%" height="300"
+                        th:src="@{'https://www.youtube.com/embed/YV07A50O8g4'}"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+            </div>
+            <div class="map">
+                <iframe
+                        th:src="@{'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4206985418705
+!2d106.78253487570396!3d10.855572157727538!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!
+3m3!1m2!1s0x3175276e7ea103df%3A0xb6cf10bb7d719327!2zSFVURUNIIC0gxJDhuqFpIGjhu41jIEP
+DtG5nIG5naOG7hyBUUC5IQ00gKFRodSBEdWMgQ2FtcHVzKQ!5e0!3m2!1svi!2s!4v1710172843840!5m2
+!1svi!2s'}"
+                        width="110%" height="300" style="border:0;" allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

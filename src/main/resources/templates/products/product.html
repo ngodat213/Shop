@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head></head>
+<body>
+<div th:fragment="product(product)">
+    <div th:each="entry : ${categoryProducts}">
+        <div class="panel panel-info panel-prod">
+            <div class="panel-heading panel-heading-prod">
+                <i class="fa fa-spinner fa-spin"></i>
+                <span th:text="${entry.key.name}">Category Name</span>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4" th:each="product : ${entry.value}">
+                        <div class="thumbnail">
+                            <img th:src="@{'/wwwroot/images/products/' +
+${product.img1}}" class="img-rounded"
+                                 th:alt="${product.name}">
+                            <div class="caption">
+                                <h4 th:text="${product.name}">Product Name</h4>
+                                <p th:text="'Giá: ' + ${product.price} + '
+VNĐ'">Product Price</p>
+                                <p>
+                                    <a th:href="@{'/mua-ngay/' + ${product.id}}"
+                                       class="btn btn-info"
+                                       role="button">
+                                        <i class="fa fa-shopping-cart"></i> Mua
+                                        ngay
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <p class="more-prod">
+                    <a th:href="@{'/products/' + ${entry.key.link}}"
+                       th:text="'Xem thêm ' + ${entry.key.name}">
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

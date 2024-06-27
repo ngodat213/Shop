@@ -10,11 +10,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "Catology")
-public class Catology {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_CAT")
-    private int id;
+    private Long id;
 
     @Column(name = "NAME_CAT", nullable = false)
     private String name;

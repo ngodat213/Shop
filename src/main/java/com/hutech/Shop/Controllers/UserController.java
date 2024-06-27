@@ -39,6 +39,7 @@ public class UserController {
         return "users/register";
     }
 
+
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") User user, // Validate đối tượng User
                            @RequestParam("confirmPassword") String confirmPassword,

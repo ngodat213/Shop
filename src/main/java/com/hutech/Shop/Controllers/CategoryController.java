@@ -1,7 +1,7 @@
 package com.hutech.Shop.Controllers;
 
 import com.hutech.Shop.Services.CategoryService;
-import com.hutech.Shop.model.Catology;
+import com.hutech.Shop.model.Category;
 import org.springframework.ui.Model;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,12 @@ public class CategoryController {
 
     @GetMapping("/add")
     public String showAddForm(Model model) {
-        model.addAttribute("category", new Catology());
+        model.addAttribute("category", new Category());
         return "/categories/add-category";
     }
 
     @PostMapping("/add")
-    public String addCategory(@Valid Catology category, BindingResult result) {
+    public String addCategory(@Valid Category category, BindingResult result) {
         if (result.hasErrors()) {
             return "/categories/add-category";
         }
@@ -39,32 +39,32 @@ public class CategoryController {
 
     @GetMapping("")
     public String listCategories(Model model) {
-        List<Catology> categories = categoryService.getAlCatologies();
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         return "/categories/categories-list";
     }
-    @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-        Catology category = categoryService.getCategoryById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
-        model.addAttribute("category", category);
-        return "/categories/update-category";
-    }
-    // POST request to update category
-    @PostMapping("/update/{id}")
-    public String updateCategory(@PathVariable("id") Long id, @Valid Catology category, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            category.setId(Math.toIntExact(id));
-            return "/categories/update-category";
-        }
-        categoryService.updateCategory(category);
-        model.addAttribute("categories", categoryService.getAlCatologies());
-        return "redirect:/categories";
-    }
-    // GET request for deleting category
-    @GetMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable("id") Long id, Model model) {  Catology category = categoryService.getCategoryById(id)  .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
-        categoryService.deleteCategoryById(id);
-        model.addAttribute("categories", categoryService.getAlCatologies());  return "redirect:/categories";
-    }
+//    @GetMapping("/edit/{id}")
+//    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+//        Category category = categoryService.getCategoryById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
+//        model.addAttribute("category", category);
+//        return "/categories/update-category";
+//    }
+//    // POST request to update category
+//    @PostMapping("/update/{id}")
+//    public String updateCategory(@PathVariable("id") Long id, @Valid Category category, BindingResult result, Model model) {
+//        if (result.hasErrors()) {
+//            category.setId(Math.toIntExact(id));
+//            return "/categories/update-category";
+//        }
+//        categoryService.updateCategory(category);
+//        model.addAttribute("categories", categoryService.getAlCatologies());
+//        return "redirect:/categories";
+//    }
+//    // GET request for deleting category
+//    @GetMapping("/delete/{id}")
+//    public String deleteCategory(@PathVariable("id") Long id, Model model) {  Category category = categoryService.getCategoryById(id)  .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
+//        categoryService.deleteCategoryById(id);
+//        model.addAttribute("categories", categoryService.findAll());  return "redirect:/categories";
+//    }
 }

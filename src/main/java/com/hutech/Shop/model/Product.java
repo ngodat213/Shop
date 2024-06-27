@@ -19,7 +19,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "ID_CAT", referencedColumnName = "ID_CAT")
-    private Catology category;
+    private Category category;
 
     @Column(name = "NAME_PRO", nullable = false)
     private String name;
